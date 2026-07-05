@@ -5,9 +5,41 @@ let playIcon;
 let pauseIcon;
 let isPlaying = false;
 let guestMessages = [];
+let supabaseReady = false;
 
 // Wedding date: 16 July 2026 08:00:00
 const weddingDate = new Date('July 16, 2026 08:00:00').getTime();
+const DEFAULT_GUEST_NAME = 'Tamu Undangan';
+
+function formatGuestName(raw) {
+    if (!raw) return DEFAULT_GUEST_NAME;
+
+    const decoded = decodeURIComponent(raw.trim());
+    const formatted = decoded.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
+
+    return formatted || DEFAULT_GUEST_NAME;
+}
+
+function getGuestNameFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return formatGuestName(params.get('to') || params.get('nama'));
+}
+
+function initGuestNameFromUrl() {
+    const guestName = getGuestNameFromUrl();
+
+    ['coverGuestName', 'envelopeGuestName'].forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = guestName;
+        }
+    });
+
+    const guestbookInput = document.getElementById('guestbookName');
+    if (guestbookInput && guestName !== DEFAULT_GUEST_NAME) {
+        guestbookInput.value = guestName;
+    }
+}
 
 // Initialize everything when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,23 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     playIcon = document.getElementById('playIcon');
     pauseIcon = document.getElementById('pauseIcon');
     
-    // Get guest name from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestName = urlParams.get('to');
-    const formattedGuestName = guestName ? guestName.replace(/-/g, ' ') : 'Tamu Undangan';
-    
-    // Set guest name on cover
-    const guestElement = document.getElementById('guestName');
-    if (guestElement) {
-        guestElement.textContent = formattedGuestName;
-    }
-    
-    // Set guest name on envelope
-    const envelopeGuestName = document.getElementById('envelopeGuestName');
-    if (envelopeGuestName) {
-        envelopeGuestName.textContent = formattedGuestName;
-    }
-    
+    // Personalisasi nama tamu dari URL (?to=Nama)
+    initGuestNameFromUrl();
     // Open button functionality
     const openBtn = document.getElementById('openBtn');
     if (openBtn) {
@@ -181,16 +198,83 @@ function updateCountdown() {
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 }
 
+// Supabase helpers
+function isSupabaseConfigured() {
+    const placeholderKeys = [
+        'PASTE_ANON_KEY_DISINI',
+        'your_publishable_or_anon_key_here'
+    ];
+
+    return typeof SUPABASE_CONFIG !== 'undefined'
+        && SUPABASE_CONFIG.url
+        && SUPABASE_CONFIG.anonKey
+        && !SUPABASE_CONFIG.url.includes('your-project')
+        && !placeholderKeys.includes(SUPABASE_CONFIG.anonKey);
+}
+
+function getSupabaseHeaders(prefer) {
+    const headers = {
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'Content-Type': 'application/json'
+    };
+
+    if (prefer) {
+        headers['Prefer'] = prefer;
+    }
+
+    return headers;
+}
+
+async function fetchGuestMessages() {
+    const response = await fetch(
+        `${SUPABASE_CONFIG.url}/rest/v1/guestbook?select=*&order=created_at.desc`,
+        { headers: getSupabaseHeaders() }
+    );
+
+    if (!response.ok) {
+        throw new Error('Gagal memuat ucapan');
+    }
+
+    return response.json();
+}
+
+async function saveGuestMessage(data) {
+    const response = await fetch(
+        `${SUPABASE_CONFIG.url}/rest/v1/guestbook`,
+        {
+            method: 'POST',
+            headers: getSupabaseHeaders('return=representation'),
+            body: JSON.stringify(data)
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Gagal menyimpan ucapan');
+    }
+
+    const result = await response.json();
+    return Array.isArray(result) ? result[0] : result;
+}
+
+function formatMessageDate(dateString) {
+    return new Date(dateString).toLocaleString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function getAttendanceLabel(attendance) {
+    return attendance === 'hadir' ? '🎉 Akan hadir' : '🙏 Tidak bisa hadir';
+}
+
 // Initialize guest book
 function initGuestBook() {
-    // Load saved messages from localStorage
-    const savedMessages = localStorage.getItem('weddingGuestMessages');
-    if (savedMessages) {
-        guestMessages = JSON.parse(savedMessages);
-        renderMessages();
-    }
-    
-    // Character counter
+    supabaseReady = isSupabaseConfigured();
+
     const messageInput = document.getElementById('guestMessage');
     const charCount = document.getElementById('charCount');
     if (messageInput && charCount) {
@@ -198,50 +282,132 @@ function initGuestBook() {
             charCount.textContent = this.value.length;
         });
     }
-    
-    // Form submission
+
     const form = document.getElementById('guestbookForm');
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
     }
+
+    initMessagesDraftToggle();
+    loadGuestMessages();
 }
 
-function handleFormSubmit(e) {
+function initMessagesDraftToggle() {
+    const draft = document.getElementById('messagesDraft');
+    const toggle = document.getElementById('messagesDraftToggle');
+
+    if (!draft || !toggle) return;
+
+    toggle.addEventListener('click', () => {
+        const isCollapsed = draft.classList.toggle('collapsed');
+        toggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+    });
+}
+
+function openMessagesDraft() {
+    const draft = document.getElementById('messagesDraft');
+    const toggle = document.getElementById('messagesDraftToggle');
+
+    if (!draft) return;
+
+    draft.classList.remove('collapsed');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+}
+
+async function loadGuestMessages() {
+    const container = document.getElementById('messagesContainer');
+    if (!container) return;
+
+    if (!supabaseReady) {
+        container.innerHTML = '<p class="messages-empty">Supabase belum dikonfigurasi. Isi anon key di config.js</p>';
+        return;
+    }
+
+    container.innerHTML = '<p class="messages-loading">Memuat ucapan...</p>';
+
+    try {
+        guestMessages = await fetchGuestMessages();
+        renderMessages();
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p class="messages-empty">Gagal memuat ucapan. Coba refresh halaman.</p>';
+    }
+}
+
+async function handleFormSubmit(e) {
     e.preventDefault();
-    
-    const name = document.getElementById('guestName').value.trim();
-    const message = document.getElementById('guestMessage').value.trim();
-    const attendance = document.querySelector('input[name="attendance"]:checked').value;
-    
+
+    const nameInput = document.getElementById('guestbookName');
+    const messageInput = document.getElementById('guestMessage');
+    const submitBtn = document.getElementById('submitBtn');
+    const attendanceInput = document.querySelector('input[name="attendance"]:checked');
+
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+    const attendance = attendanceInput ? attendanceInput.value : 'hadir';
+
     if (!name || !message) return;
-    
-    const newMessage = {
-        id: Date.now(),
-        name,
-        message,
-        attendance,
-        timestamp: new Date().toLocaleString('id-ID')
-    };
-    
-    guestMessages.unshift(newMessage);
-    localStorage.setItem('weddingGuestMessages', JSON.stringify(guestMessages));
-    
-    // Reset form
-    e.target.reset();
-    document.getElementById('charCount').textContent = '0';
-    
-    renderMessages();
+
+    if (!supabaseReady) {
+        showToast('Supabase belum dikonfigurasi. Isi anon key di config.js');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Mengirim...';
+
+    try {
+        const savedMessage = await saveGuestMessage({ name, message, attendance });
+        guestMessages.unshift(savedMessage);
+        renderMessages();
+        openMessagesDraft();
+
+        const messagesContainer = document.getElementById('messagesContainer');
+        if (messagesContainer) {
+            messagesContainer.scrollTop = 0;
+        }
+
+        e.target.reset();
+        document.getElementById('charCount').textContent = '0';
+        showToast('Ucapan berhasil dikirim!');
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal mengirim ucapan. Coba lagi.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kirim Ucapan';
+    }
+}
+
+function updateMessagesCount() {
+    const countEl = document.getElementById('messagesCount');
+    if (!countEl) return;
+
+    const total = guestMessages.length;
+    countEl.textContent = total ? `${total} ucapan · ketuk` : 'ketuk untuk lihat';
 }
 
 function renderMessages() {
     const container = document.getElementById('messagesContainer');
     if (!container) return;
-    
+
+    updateMessagesCount();
+
+    if (!guestMessages.length) {
+        container.innerHTML = '<p class="messages-empty">Belum ada ucapan. Jadilah yang pertama!</p>';
+        return;
+    }
+
     container.innerHTML = guestMessages.map(msg => `
         <div class="message-card fade-in-up">
             <p class="message-name">${escapeHtml(msg.name)}</p>
             <p class="message-text">${escapeHtml(msg.message)}</p>
-            <p class="message-meta">${msg.attendance === 'hadir' ? '🎉 Akan hadir' : '🙏 Tidak bisa hadir'} · ${msg.timestamp}</p>
+            <p class="message-meta">
+                <span class="attendance-badge ${msg.attendance === 'hadir' ? 'attendance-hadir' : 'attendance-tidak'}">${getAttendanceLabel(msg.attendance)}</span>
+                · ${formatMessageDate(msg.created_at)}
+            </p>
         </div>
     `).join('');
 }
@@ -255,17 +421,23 @@ function escapeHtml(text) {
 // Copy to clipboard function with toast
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
-        showToast();
+        showToast('Rekening berhasil disalin!');
     }).catch(err => {
         console.error('Failed to copy:', err);
     });
 }
 
 // Show toast notification
-function showToast() {
+function showToast(message) {
     const toast = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+
+    if (toastMessage) {
+        toastMessage.textContent = message || 'Berhasil!';
+    }
+
     toast.classList.add('show');
-    
+
     setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);

@@ -61,7 +61,7 @@
             <p class="invitation-to">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <div class="guest-name-box">
                 <span class="guest-icon">👤</span>
-                <span class="guest-name" id="guestName"></span>
+                <span class="guest-name" id="coverGuestName"></span>
             </div>
             <p class="di-tempat">Di tempat</p>
             <button class="open-btn" id="openBtn">
@@ -278,8 +278,8 @@
             
             <form class="guestbook-form" id="guestbookForm">
                 <div class="form-group">
-                    <label for="guestName">Nama</label>
-                    <input type="text" id="guestName" placeholder="Masukkan nama Anda" required>
+                    <label for="guestbookName">Nama</label>
+                    <input type="text" id="guestbookName" placeholder="Masukkan nama Anda" required>
                 </div>
                 
                 <div class="form-group">
@@ -302,11 +302,23 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="submit-btn">Kirim Ucapan</button>
+                <button type="submit" class="submit-btn" id="submitBtn">Kirim Ucapan</button>
             </form>
             
-            <div class="messages-container" id="messagesContainer">
-                <!-- Messages will be added here -->
+            <div class="messages-draft collapsed" id="messagesDraft">
+                <button type="button" class="messages-draft-toggle" id="messagesDraftToggle" aria-expanded="false">
+                    <span class="messages-draft-title">Ucapan Tamu</span>
+                    <span class="messages-draft-actions">
+                        <span class="messages-count" id="messagesCount"></span>
+                        <span class="messages-chevron" aria-hidden="true">▼</span>
+                    </span>
+                </button>
+                <div class="messages-draft-body" id="messagesDraftBody">
+                    <div class="messages-container" id="messagesContainer">
+                        <p class="messages-loading" id="messagesLoading">Memuat ucapan...</p>
+                    </div>
+                    <p class="messages-scroll-hint">Gulir di dalam kotak untuk melihat ucapan lainnya</p>
+                </div>
             </div>
         </section>
 
@@ -334,7 +346,7 @@
                         
                         <div class="envelope-text-front">
                             <p class="text-front-top">Untuk</p>
-                            <p class="text-front-middle" id="envelopeGuestName">Tamu Undangan</p>
+                            <p class="text-front-middle" id="envelopeGuestName"></p>
                             <p class="text-front-bottom">Klik untuk membuka</p>
                         </div>
                     </div>
@@ -444,13 +456,14 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            <span>Rekening berhasil disalin!</span>
+            <span id="toastMessage">Rekening berhasil disalin!</span>
         </div>
     </div>
     
     <!-- Floating Decorations -->
     <div class="floating-decorations" id="floatingDecorations"></div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
