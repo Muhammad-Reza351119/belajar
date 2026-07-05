@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nia & Zakky Wedding - 16 Juli 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://wedding-invitatiom.vercel.app/assets/audio/background-music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Nia & Zakky</div>
+            <ul class="nav-menu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#couple">Couple</a></li>
+                <li><a href="#story">Story</a></li>
+                <li><a href="#event">Event</a></li>
+                <li><a href="#guestbook">Wishes</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Music Control Button -->
+    <div class="music-controls">
+        <button class="music-btn" id="musicBtn" title="Putar Musik">
+            <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg class="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+        </button>
+        <button class="music-volume" id="volumeBtn" title="Volume">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Cover Section -->
+    <section class="cover-section" id="cover">
+        <div class="cover-container">
+            <p class="bismillah-cover">Bismillahirrahmanirrahim</p>
+            <p class="opening-text-cover">
+                Dengan memohon Rahmat dan Ridho Allah SWT,<br>
+                kami bermaksud menyelenggarakan resepsi pernikahan
+            </p>
+            <h1 class="couple-names-cover">Nia & Zakky</h1>
+            <div class="heart-divider">❤️</div>
+            <p class="date-cover">16 · JULI · 2026</p>
+            <p class="day-cover">KAMIS</p>
+            <p class="invitation-to">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            <div class="guest-name-box">
+                <span class="guest-icon">👤</span>
+                <span class="guest-name" id="guestName"></span>
+            </div>
+            <p class="di-tempat">Di tempat</p>
+            <button class="open-btn" id="openBtn">
+                ✉️ Buka Undangan
+            </button>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent" style="display: none;">
+        <!-- Hero Section -->
+        <section class="section hero-section" id="hero">
+            <p class="bismillah-main">Bismillahirrahmanirrahim</p>
+            <p class="opening-text-main">
+                Dengan memohon Rahmat dan Ridho Allah SWT,<br>
+                kami bermaksud menyelenggarakan resepsi pernikahan
+            </p>
+            <h1 class="couple-names-main">Nia & Zakky</h1>
+            <p class="date-main">16 · JULI · 2026</p>
+            <p class="day-main">KAMIS</p>
+        </section>
+
+        <!-- Couple Section -->
+        <section class="section couple-section" id="couple">
+            <h2 class="section-title">Mempelai</h2>
+            <p class="section-subtitle">The Bride & Groom</p>
+            
+            <div class="couple-grid">
+                <div class="person-card animate-item">
+                    <div class="person-avatar">N</div>
+                    <h3 class="person-name">Nia</h3>
+                    <h4 class="person-fullname">Nia Roswati</h4>
+                    <p class="person-role">Putri kedua dari</p>
+                    <p class="person-parents">Bpk. Aman Kasman<br>& Ibu Mimin Karminah</p>
+                </div>
+                
+                <div class="and-symbol animate-item">&</div>
+                
+                <div class="person-card animate-item">
+                    <div class="person-avatar">Z</div>
+                    <h3 class="person-name">Zakky</h3>
+                    <h4 class="person-fullname">Mohammad Zakky Firdaus</h4>
+                    <p class="person-role">Putra pertama dari</p>
+                    <p class="person-parents">Bpk. Asep Dadang<br>& Ibu Elih Muslihati</p>
+                </div>
+            </div>
+            
+            <div class="verse-box">
+                <p class="verse-text">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang.</p>
+                <p class="verse-ref">QS. Ar-Rum: 21</p>
+            </div>
+        </section>
+
+        <!-- Story Section -->
+        <section class="section story-section" id="story">
+            <h2 class="section-title">Perjalanan Cinta Kami</h2>
+            <p class="section-subtitle">Menuju ridha-Nya dalam ikatan yang suci</p>
+            
+            <div class="story-timeline">
+                <div class="timeline-line"></div>
+                <div class="story-item animate-item">
+                    <div class="story-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </div>
+                    <div class="story-content">
+                        <h3 class="story-title">Ta'aruf</h3>
+                        <p class="story-date">Februari 2026</p>
+                        <p class="story-text">Tidak ada kisah cinta yang diumbar, tidak pula janji yang diikat dalam hubungan bernama pacaran. Namun, Allah mempertemukan kami dengan cara yang paling tenang dan paling indah - melalui jalan ta'aruf yang dijaga.</p>
+                    </div>
+                </div>
+                
+                <div class="story-item animate-item">
+                    <div class="story-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <div class="story-content">
+                        <h3 class="story-title">Khitbah</h3>
+                        <p class="story-date">April 2026</p>
+                        <p class="story-text">Dalam proses yang sederhana namun penuh makna, kami belajar bahwa cinta terbaik bukanlah yang datang terburu-buru, melainkan yang hadir bersama keseriusan.</p>
+                    </div>
+                </div>
+                
+                <div class="story-item animate-item">
+                    <div class="story-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <div class="story-content">
+                        <h3 class="story-title">Pernikahan</h3>
+                        <p class="story-date">Juli 2026</p>
+                        <p class="story-text">Kini, dengan penuh syukur, kami melangkah menuju hari pernikahan. Memulai perjalanan baru sebagai dua hamba yang ingin saling membersamai dalam kebaikan.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="love-quote">"Cinta terbaik adalah yang diawali dengan doa, dijaga dengan adab, dan direstui oleh-Nya"</p>
+        </section>
+
+        <!-- Countdown Section -->
+    <section class="section countdown-section">
+      <h2 class="section-title">Hitung Mundur</h2>
+      <p class="section-subtitle">Menuju Hari Bahagia</p>
+      
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Hari</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Jam</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Menit</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="seconds">00</span>
+          <span class="countdown-label">Detik</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prayer Section -->
+    <section class="section prayer-section">
+      <h2 class="section-title">Doa untuk Pengantin</h2>
+      <p class="section-subtitle">Doa dan berkah untuk pernikahan yang penuh keberkahan</p>
+      
+      <div class="prayer-card">
+        <p class="prayer-arab">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
+        <p class="prayer-translation">"Ya Tuhan kami, anugerahkanlah kepada kami pasangan dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa."</p>
+      </div>
+      
+      <div class="prayer-card">
+        <p class="prayer-arab">بَارَكَ اللهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</p>
+        <p class="prayer-translation">"Semoga Allah memberkahimu dan melimpahkan berkah atasmu, serta mengumpulkan kalian berdua dalam kebaikan."</p>
+      </div>
+    </section>
+
+        <!-- Event Section -->
+        <section class="section event-section" id="event">
+            <h2 class="section-title">Save The Date</h2>
+            <p class="section-subtitle">Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir</p>
+            
+            <div class="event-grid">
+                <div class="event-card animate-item">
+                    <h3 class="event-label">The Sacred Vow</h3>
+                    <h4 class="event-name">Akad Nikah</h4>
+                    <p class="event-date">Kamis, 16 Juli 2026</p>
+                    <p class="event-time">08.00 - Selesai</p>
+                    <p class="event-place">KUA Ujungberung</p>
+                </div>
+                
+                <div class="event-card animate-item">
+                    <h3 class="event-label">The Celebration</h3>
+                    <h4 class="event-name">Resepsi</h4>
+                    <p class="event-date">Sabtu, 18 Juli 2026</p>
+                    <p class="event-time">10.00 s/d 15.00</p>
+                    <p class="event-place">Kediaman mempelai wanita</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="section location-section">
+            <h2 class="section-title">Lokasi Acara</h2>
+            <p class="section-subtitle">Kediaman Mempelai Wanita</p>
+            <p class="address-text">Komplek Cijambe Indah, Jl.Vijayakusuma XVII no .34<br>Cijambe Bandung</p>
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.6683744500763!2d107.63070837499793!3d-6.938356267942794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e7f19a9e255d%3A0x434e6f3a1f9d1f7a!2sCijambe%2C%20Kec.%20Ujung%20Berung%2C%20Kota%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1718256000000!5m2!1sid!2sid" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            
+            <a href="https://maps.google.com/?q=Komplek%20Cijambe%20Indah%2C%20Jl.Vijayakusuma%20XVII%20no%20.34%20Cijambe%20Bandung" target="_blank" class="map-btn">
+                📍 Buka di Google Maps
+            </a>
+        </section>
+
+        <!-- Guest List Section -->
+        <section class="section guests-section">
+            <h2 class="section-title">Turut Mengundang</h2>
+            <p class="section-subtitle">Honored Guests</p>
+            
+            <div class="guest-groups">
+                <div class="guest-group">
+                    <h3 class="group-title">Pihak Wanita</h3>
+                    <ul class="guest-list">
+                        <li>✦ Kel. Besar Bpk Aman Kasman</li>
+                        <li>✦ Bpk Nanang - Ketua Dkm Majid Al Falah</li>
+                    </ul>
+                </div>
+                
+                <div class="guest-group">
+                    <h3 class="group-title">Pihak Pria</h3>
+                    <ul class="guest-list">
+                        <li>✦ Kel besar Bpk M Toha (Alm)</li>
+                        <li>✦ Kel besar Bpk Inan Sopian (Alm)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guest Book Section -->
+        <section class="section guestbook-section" id="guestbook">
+            <h2 class="section-title">Buku Tamu</h2>
+            <p class="section-subtitle">Berikan ucapan & doa untuk kami</p>
+            
+            <form class="guestbook-form" id="guestbookForm">
+                <div class="form-group">
+                    <label for="guestName">Nama</label>
+                    <input type="text" id="guestName" placeholder="Masukkan nama Anda" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guestMessage">Ucapan & Doa</label>
+                    <textarea id="guestMessage" placeholder="Tulis ucapan dan doa untuk kami..." maxlength="500" required></textarea>
+                    <span class="char-counter"><span id="charCount">0</span>/500</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>Konfirmasi Kehadiran</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="hadir" checked>
+                            <span>🎉 Hadir</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="tidak-hadir">
+                            <span>🙏 Tidak Hadir</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Kirim Ucapan</button>
+            </form>
+            
+            <div class="messages-container" id="messagesContainer">
+                <!-- Messages will be added here -->
+            </div>
+        </section>
+
+        <!-- Digital Envelope Section -->
+        <section class="section envelope-section">
+            <h2 class="section-title">Amplop Digital</h2>
+            <p class="section-subtitle">Doa restu Anda adalah karunia terindah bagi kami</p>
+            
+            <div class="envelope-wrapper">
+                <div class="envelope-main" id="envelopeMain">
+                    <!-- Confetti Container -->
+                    <div class="confetti-container" id="confettiContainer"></div>
+                    
+                    <!-- Envelope -->
+                    <div class="envelope-box">
+                        <div class="envelope-flap"></div>
+                        <div class="envelope-seal">
+                            <div class="seal-outer"></div>
+                            <div class="seal-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="envelope-text-front">
+                            <p class="text-front-top">Untuk</p>
+                            <p class="text-front-middle" id="envelopeGuestName">Tamu Undangan</p>
+                            <p class="text-front-bottom">Klik untuk membuka</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Envelope Content -->
+                    <div class="envelope-content" id="envelopeContent">
+                        <div class="content-card">
+                            <div class="content-header">
+                                <p class="content-bismillah">Bismillah</p>
+                                <h3 class="content-title">Amplop Digital</h3>
+                            </div>
+                            
+                            <p class="envelope-text">Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi melalui:</p>
+                            
+                            <div class="bank-account bank-mandiri">
+                <div class="bank-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="10" width="18" height="11" rx="2" ry="2"></rect>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <polyline points="3 10 12 3 21 10"></polyline>
+                    </svg>
+                </div>
+                <div class="bank-details">
+                    <p class="bank-name">Bank Mandiri</p>
+                    <p class="account-number">1234567890</p>
+                    <p class="account-name">a.n. Nia Roswati</p>
+                </div>
+                <button class="copy-btn" onclick="copyToClipboard('1234567890')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Salin
+                </button>
+            </div>
+            
+            <div class="bank-account bank-bca">
+                <div class="bank-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="10" width="18" height="11" rx="2" ry="2"></rect>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <polyline points="3 10 12 3 21 10"></polyline>
+                    </svg>
+                </div>
+                <div class="bank-details">
+                    <p class="bank-name">Bank BCA</p>
+                    <p class="account-number">0987654321</p>
+                    <p class="account-name">a.n. Mohammad Zakky Firdaus</p>
+                </div>
+                <button class="copy-btn" onclick="copyToClipboard('0987654321')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Salin
+                </button>
+            </div>
+                            
+                            <p class="content-thanks">Terima kasih atas doa dan restunya 💝</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Closing Section -->
+        <section class="section closing-section">
+            <h2 class="section-title">Nia & Zakky</h2>
+            <p class="closing-date">16 · Juli · 2026</p>
+            <p class="closing-quote">"Sesungguhnya Allah sangat mencintai hamba-Nya yang menikah dan membenci hamba-Nya yang membujang."</p>
+            <p class="closing-quote-ref">— HR. Bukhari</p>
+            
+            <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu</p>
+            
+            <p class="thanks-text">Atas kehadiran dan doa restunya, kami ucapkan</p>
+            <p class="jazak-text">Jazakumullah Khairan Katsira</p>
+            
+            <p class="signature-text">Hormat Kami,</p>
+            <p class="parents-text">
+                Kel. Bpk. Aman Kasman & Ibu Mimin Karminah<br>
+                Kel. Bpk. Asep Dadang & Ibu Elih Muslihati
+            </p>
+            
+            <p class="copyright-text">© 2026 Nia & Zakky Wedding Invitation</p>
+            <p class="made-text">Made with ❤️ for a special day</p>
+        </section>
+    </main>
+    
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-text">Nia & Zakky</div>
+            <div class="preloader-spinner"></div>
+        </div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+    
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <div class="toast-content">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Rekening berhasil disalin!</span>
+        </div>
+    </div>
+    
+    <!-- Floating Decorations -->
+    <div class="floating-decorations" id="floatingDecorations"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
