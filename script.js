@@ -7,8 +7,8 @@ let isPlaying = false;
 let guestMessages = [];
 let supabaseReady = false;
 
-// Hitung mundur menuju akad nikah: 16 Juli 2026 08:00:00
-const weddingDate = new Date('July 16, 2026 08:00:00').getTime();
+// Hitung mundur menuju resepsi: 18 Juli 2026 10:00:00
+const weddingDate = new Date('July 18, 2026 10:00:00').getTime();
 const DEFAULT_GUEST_NAME = 'Tamu Undangan';
 
 function formatGuestName(raw) {
