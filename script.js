@@ -14,13 +14,21 @@ const DEFAULT_GUEST_NAME = 'Tamu Undangan';
 function formatGuestName(raw) {
     if (!raw) return DEFAULT_GUEST_NAME;
 
-    const decoded = decodeURIComponent(raw.trim());
-    const formatted = decoded.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
+    try {
+        raw = decodeURIComponent(String(raw).trim());
+    } catch (error) {
+        raw = String(raw).trim();
+    }
 
+    const formatted = raw.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
     return formatted || DEFAULT_GUEST_NAME;
 }
 
 function getGuestNameFromUrl() {
+    if (window.__GUEST_NAME__) {
+        return window.__GUEST_NAME__;
+    }
+
     const params = new URLSearchParams(window.location.search);
     return formatGuestName(params.get('to') || params.get('nama'));
 }
@@ -39,6 +47,14 @@ function initGuestNameFromUrl() {
     if (guestbookInput && guestName !== DEFAULT_GUEST_NAME) {
         guestbookInput.value = guestName;
     }
+
+    window.__GUEST_NAME__ = guestName;
+}
+
+function applyGuestNameEarly() {
+    if (document.body) {
+        initGuestNameFromUrl();
+    }
 }
 
 // Initialize everything when DOM loads
@@ -46,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get music elements
     bgMusic = document.getElementById('bgMusic');
     musicBtn = document.getElementById('musicBtn');
-    playIcon = document.getElementById('playIcon');
-    pauseIcon = document.getElementById('pauseIcon');
+    playIcon = musicBtn ? musicBtn.querySelector('.play-icon') : null;
+    pauseIcon = musicBtn ? musicBtn.querySelector('.pause-icon') : null;
     
     // Personalisasi nama tamu dari URL (?to=Nama)
     initGuestNameFromUrl();
@@ -80,6 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create floating decorations
     createFloatingDecorations();
 });
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyGuestNameEarly);
+} else {
+    applyGuestNameEarly();
+}
 
 // Initialize everything when page fully loads
 window.addEventListener('load', () => {
@@ -199,23 +221,37 @@ function updateCountdown() {
 }
 
 // Supabase helpers
+function getSupabaseConfig() {
+    if (typeof window.SUPABASE_CONFIG !== 'undefined') {
+        return window.SUPABASE_CONFIG;
+    }
+
+    if (typeof SUPABASE_CONFIG !== 'undefined') {
+        return SUPABASE_CONFIG;
+    }
+
+    return null;
+}
+
 function isSupabaseConfigured() {
+    const config = getSupabaseConfig();
     const placeholderKeys = [
         'PASTE_ANON_KEY_DISINI',
         'your_publishable_or_anon_key_here'
     ];
 
-    return typeof SUPABASE_CONFIG !== 'undefined'
-        && SUPABASE_CONFIG.url
-        && SUPABASE_CONFIG.anonKey
-        && !SUPABASE_CONFIG.url.includes('your-project')
-        && !placeholderKeys.includes(SUPABASE_CONFIG.anonKey);
+    return config
+        && config.url
+        && config.anonKey
+        && !config.url.includes('your-project')
+        && !placeholderKeys.includes(config.anonKey);
 }
 
 function getSupabaseHeaders(prefer) {
+    const config = getSupabaseConfig();
     const headers = {
-        'apikey': SUPABASE_CONFIG.anonKey,
-        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'apikey': config.anonKey,
+        'Authorization': `Bearer ${config.anonKey}`,
         'Content-Type': 'application/json'
     };
 
@@ -227,8 +263,9 @@ function getSupabaseHeaders(prefer) {
 }
 
 async function fetchGuestMessages() {
+    const config = getSupabaseConfig();
     const response = await fetch(
-        `${SUPABASE_CONFIG.url}/rest/v1/guestbook?select=*&order=created_at.desc`,
+        `${config.url}/rest/v1/guestbook?select=*&order=created_at.desc`,
         { headers: getSupabaseHeaders() }
     );
 
@@ -240,8 +277,9 @@ async function fetchGuestMessages() {
 }
 
 async function saveGuestMessage(data) {
+    const config = getSupabaseConfig();
     const response = await fetch(
-        `${SUPABASE_CONFIG.url}/rest/v1/guestbook`,
+        `${config.url}/rest/v1/guestbook`,
         {
             method: 'POST',
             headers: getSupabaseHeaders('return=representation'),
@@ -321,7 +359,7 @@ async function loadGuestMessages() {
     if (!container) return;
 
     if (!supabaseReady) {
-        container.innerHTML = '<p class="messages-empty">Supabase belum dikonfigurasi. Isi anon key di config.js</p>';
+        container.innerHTML = '<p class="messages-empty">Koneksi database belum siap. Hubungi pemilik undangan.</p>';
         return;
     }
 
@@ -351,7 +389,7 @@ async function handleFormSubmit(e) {
     if (!name || !message) return;
 
     if (!supabaseReady) {
-        showToast('Supabase belum dikonfigurasi. Isi anon key di config.js');
+        showToast('Koneksi database belum siap. Coba lagi nanti.');
         return;
     }
 
@@ -454,6 +492,8 @@ function scrollToTop() {
 // Create floating decorations
 function createFloatingDecorations() {
     const container = document.getElementById('floatingDecorations');
+    if (!container) return;
+
     const decorSymbols = ['✦', '❀', '✧', '♡', '❁', '✽', '❋'];
     
     for (let i = 0; i < 20; i++) {

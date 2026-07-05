@@ -34,7 +34,7 @@ if ($url === '' || $key === '') {
 }
 
 $content = <<<JS
-const SUPABASE_CONFIG = {
+window.SUPABASE_CONFIG = {
     url: '{$url}',
     anonKey: '{$key}'
 };
@@ -42,4 +42,5 @@ const SUPABASE_CONFIG = {
 JS;
 
 file_put_contents(__DIR__ . '/config.js', $content);
-echo "config.js berhasil dibuat dari .env\n";
+file_put_contents(__DIR__ . '/config.public.js', $content);
+echo "config.js dan config.public.js berhasil dibuat dari .env\n";

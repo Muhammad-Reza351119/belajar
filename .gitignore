@@ -1,6 +1,8 @@
-# Environment & secrets
+# Environment & secrets (lokal saja)
 .env
 config.js
+
+# config.public.js di-commit agar Supabase jalan di Netlify
 
 # OS
 .DS_Store

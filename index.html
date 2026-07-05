@@ -6,6 +6,23 @@
     <title>Nia & Zakky Wedding - 16 Juli 2026</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            function formatGuestName(raw) {
+                if (!raw) return 'Tamu Undangan';
+                try {
+                    raw = decodeURIComponent(String(raw).trim());
+                } catch (error) {
+                    raw = String(raw).trim();
+                }
+                var formatted = raw.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
+                return formatted || 'Tamu Undangan';
+            }
+
+            var params = new URLSearchParams(window.location.search);
+            window.__GUEST_NAME__ = formatGuestName(params.get('to') || params.get('nama'));
+        })();
+    </script>
 </head>
 <body>
     <!-- Background Music -->
@@ -61,7 +78,8 @@
             <p class="invitation-to">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <div class="guest-name-box">
                 <span class="guest-icon">👤</span>
-                <span class="guest-name" id="coverGuestName"></span>
+                <span class="guest-name" id="coverGuestName">Tamu Undangan</span>
+                <script>document.getElementById('coverGuestName').textContent = window.__GUEST_NAME__ || 'Tamu Undangan';</script>
             </div>
             <p class="di-tempat">Di tempat</p>
             <button class="open-btn" id="openBtn">
@@ -346,7 +364,8 @@
                         
                         <div class="envelope-text-front">
                             <p class="text-front-top">Untuk</p>
-                            <p class="text-front-middle" id="envelopeGuestName"></p>
+                            <p class="text-front-middle" id="envelopeGuestName">Tamu Undangan</p>
+                            <script>document.getElementById('envelopeGuestName').textContent = window.__GUEST_NAME__ || 'Tamu Undangan';</script>
                             <p class="text-front-bottom">Klik untuk membuka</p>
                         </div>
                     </div>
@@ -463,7 +482,7 @@
     <!-- Floating Decorations -->
     <div class="floating-decorations" id="floatingDecorations"></div>
 
-    <script src="config.js"></script>
+    <script src="config.public.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
