@@ -145,7 +145,7 @@ function initEnvelope() {
 function createConfetti(container) {
     if (!container) return;
     
-    const colors = ['#8BDFDD', '#F48F68', '#FFE394', '#A7E8E6', '#FFF6DE'];
+    const colors = ['#8BDFDD', '#F48F68', '#F0D0C4', '#A7E8E6', '#F5FBFA'];
     const numConfetti = 60;
     
     for (let i = 0; i < numConfetti; i++) {
